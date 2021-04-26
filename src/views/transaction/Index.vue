@@ -32,7 +32,7 @@
                         class="btn btn-sm btn-outline-info"
                         >Edit</router-link
                       >
-                      <button class="btn btn-sm btn-outline-danger">
+                      <button @click.prevent="destroy(transaction.id, index)" class="btn btn-sm btn-outline-danger">
                         Delete
                       </button>
                     </div>
@@ -69,8 +69,22 @@ export default {
         });
     });
 
+    function destroy(id, index) {
+      if(confirm('apakah anda yakin?')){
+        axios
+        .delete(`http://127.0.0.1:8001/api/transaction/${id}`)
+        .then(() => {
+          transactions.value.data.splice(index,1)
+        })
+        .catch((err) => {
+         console.log(err.response.data)
+        });
+      }      
+    }
+
     return {
       transactions,
+      destroy
     };
   },
 };
